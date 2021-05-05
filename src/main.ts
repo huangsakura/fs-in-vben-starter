@@ -18,11 +18,12 @@ import 'vite-plugin-svg-icons/register';
 // In the local development for on-demand introduction, the number of browser requests will increase by about 20%.
 // Which may slow down the browser refresh.
 // Therefore, all are introduced in local development, and only introduced on demand in the production environment
-if (import.meta.env.DEV) {
-  import('ant-design-vue/dist/antd.less');
-}
+// if (import.meta.env.DEV) {
+//   import('ant-design-vue/dist/antd.less');
+// }
 
 import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.less';
 import setupFastCrud from './setup-fast-crud';
 import './setup-fast-crud.less';
 
