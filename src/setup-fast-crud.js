@@ -47,10 +47,13 @@ export default function (app) {
       secretKey: '', // 传了secretKey 和secretId 代表使用本地签名模式（不安全，生产环境不推荐）
       async getAuthorization() {
         // 不传secretKey代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
-        return await defHttp.request({
-          url: '/upload/cos/getAuthorization',
-          method: 'get',
-        });
+        return await defHttp.request(
+          {
+            url: '/upload/cos/getAuthorization',
+            method: 'get',
+          },
+          { apiUrl: 'http://www.docmirror.cn:7070/api' }
+        );
       },
       successHandle(ret) {
         // 上传完成后可以在此处处理结果，修改url什么的
@@ -66,10 +69,13 @@ export default function (app) {
       accessKeySecret: '',
       async getAuthorization() {
         // 不传accessKeySecret代表使用临时签名模式,此时此参数必传（安全，生产环境推荐）
-        return defHttp.request({
-          url: '/upload/alioss/getAuthorization',
-          method: 'get',
-        });
+        return defHttp.request(
+          {
+            url: '/upload/alioss/getAuthorization',
+            method: 'get',
+          },
+          { apiUrl: 'http://www.docmirror.cn:7070/api' }
+        );
       },
       sdkOpts: {
         // sdk配置
@@ -85,10 +91,13 @@ export default function (app) {
       bucket: 'd2p-demo',
       async getToken() {
         // return  {token:xxx,expires:xxx}
-        return defHttp.request({
-          url: '/upload/qiniu/getToken',
-          method: 'get',
-        });
+        return defHttp.request(
+          {
+            url: '/upload/qiniu/getToken',
+            method: 'get',
+          },
+          { apiUrl: 'http://www.docmirror.cn:7070/api' }
+        );
       },
       successHandle(ret) {
         // 上传完成后可以在此处处理结果，修改url什么的
@@ -98,7 +107,7 @@ export default function (app) {
       domain: 'http://d2p.file.veryreader.com',
     },
     form: {
-      action: '/api/upload/form/upload',
+      action: 'http://www.docmirror.cn:7070/api/upload/form/upload',
       name: 'file',
       withCredentials: false,
       successHandle(ret) {
