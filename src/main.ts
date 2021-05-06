@@ -23,7 +23,7 @@ import 'vite-plugin-svg-icons/register';
 // }
 
 import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.less';
+import 'ant-design-vue/dist/antd.css';
 import setupFastCrud from './setup-fast-crud';
 import './setup-fast-crud.less';
 
