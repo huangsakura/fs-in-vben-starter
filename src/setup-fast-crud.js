@@ -7,11 +7,12 @@ import UiAntdv from '@fast-crud/ui-antdv';
 
 // 导出 setupFastCrud
 // 国际化配置见 /src/locales/en  or zh_CN
-export default function (app) {
+export default function (app, i18n) {
   //先安装ui
   app.use(UiAntdv);
   //再安装fast-crud
   app.use(FastCrud, {
+    i18n,
     async dictRequest({ url }) {
       return await defHttp.request({ url });
     },

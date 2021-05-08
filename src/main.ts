@@ -28,11 +28,8 @@ import setupFastCrud from './setup-fast-crud';
 import './setup-fast-crud.less';
 
 (async () => {
+  // @ts-ignore
   const app = createApp(App);
-
-  // 安装fast-crud
-  setupFastCrud(app);
-  app.use(Antd);
 
   // Configure vuex store
   setupStore(app);
@@ -44,8 +41,12 @@ import './setup-fast-crud.less';
   registerGlobComp(app);
 
   // Multilingual configuration
-  await setupI18n(app);
+  const i18n = await setupI18n(app);
 
+  //----------- 安装fast-crud--------------
+  setupFastCrud(app, i18n);
+  app.use(Antd);
+  //--------------------------------------
   // Configure routing
   setupRouter(app);
 
