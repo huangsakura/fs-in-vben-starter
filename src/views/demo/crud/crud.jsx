@@ -25,6 +25,11 @@ export default function ({ expose }) {
         delRequest,
       },
       columns: {
+        id: {
+          title: 'ID',
+          type: 'text',
+          column: { width: 55, align: 'center' },
+        },
         title: {
           title: '商品标题',
           type: 'text',
