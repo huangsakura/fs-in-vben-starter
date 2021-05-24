@@ -5,7 +5,9 @@ async function request({ url, data, params }) {
       return new Promise((resolve) => {
         let ret = item.handle({ body: data, params });
         console.log('ret', ret);
-        resolve(ret.data);
+        setTimeout(() => {
+          resolve(ret.data);
+        }, 20);
       });
     }
   }

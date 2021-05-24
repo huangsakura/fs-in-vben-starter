@@ -7,23 +7,32 @@ import UiAntdv from '@fast-crud/ui-antdv';
 
 // 导出 setupFastCrud
 // 国际化配置见 /src/locales/en  or zh_CN
-export default function (app) {
+export default function (app, i18n) {
   //先安装ui
   app.use(UiAntdv);
   //再安装fast-crud
   app.use(FastCrud, {
+    i18n,
     async dictRequest({ url }) {
       return await defHttp.request({ url });
     },
     commonOptions() {
       return {
+        rowHandle: {
+          buttons: {
+            view: { size: 'small' },
+            edit: { size: 'small' },
+            remove: { size: 'small' },
+          },
+        },
         table: {
           size: 'small',
           pagination: false,
         },
         request: {
-          transformQuery: ({ page, form }) => {
-            return { current: page.currentPage, size: page.pageSize, ...form };
+          transformQuery: ({ page, form, sort }) => {
+            const order = sort == null ? {} : { orderProp: sort.prop, orderAsc: sort.asc };
+            return { current: page.currentPage, size: page.pageSize, ...form, ...order };
           },
           transformRes: ({ res }) => {
             return { currentPage: res.current, pageSize: res.size, ...res };
