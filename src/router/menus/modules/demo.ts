@@ -12,7 +12,11 @@ const demo: MenuModule = {
       },
       {
         path: 'https://github.com/fast-crud/fs-in-vben-starter',
-        name: '示例源码',
+        name: '源码(github)',
+      },
+      {
+        path: 'https://gitee.com/fast-crud/fs-in-vben-starter',
+        name: '源码(gitee)',
       },
       {
         path: 'http://fast-crud.docmirror.cn/',
