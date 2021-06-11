@@ -18,7 +18,6 @@ const dashboard: AppRouteModule = {
       component: () => import('/@/views/demo/crud/index.vue'),
       meta: {
         title: 'FastCrud',
-        icon: 'simple-icons:about-dot-me',
       },
     },
   ],
