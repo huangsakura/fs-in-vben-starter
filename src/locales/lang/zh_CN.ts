@@ -1,7 +1,7 @@
 import { genMessage } from '../helper';
 import antdLocale from 'ant-design-vue/es/locale/zh_CN';
 import momentLocale from 'moment/dist/locale/zh-cn';
-import zhFsLocale from '@fast-crud/fast-crud/dist/local/lang/zh-cn.js';
+import zhFsLocale from '@fast-crud/fast-crud/dist/locale/lang/zh-cn.js';
 
 const modules = import.meta.globEager('./zh_CN/**/*.ts');
 export default {
