@@ -20,6 +20,27 @@ const dashboard: AppRouteModule = {
         title: 'FastCrud',
       },
     },
+    {
+      path: 'https://github.com/fast-crud/fs-in-vben-starter',
+      name: '源码(github)',
+      meta: {
+        title: '源码(github)',
+      },
+    },
+    {
+      path: 'https://gitee.com/fast-crud/fs-in-vben-starter',
+      name: '源码(gitee)',
+      meta: {
+        title: '源码(gitee)',
+      },
+    },
+    {
+      path: 'http://fast-crud.docmirror.cn/',
+      name: '文档（document）',
+      meta: {
+        title: '文档（document）',
+      },
+    },
   ],
 };
 
