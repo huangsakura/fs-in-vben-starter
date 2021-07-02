@@ -1,37 +1,36 @@
-import '/@/design/index.less';
-import 'virtual:windi.css';
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.less';
 
-import { createApp } from 'vue';
+import '/@/design/index.less';
+import '/@/design/tailwind.css';
+// Register icon sprite
+import 'virtual:svg-icons-register';
 import App from './App.vue';
+import { createApp } from 'vue';
 import { initAppConfigStore } from '/@/logics/initAppConfig';
-import router, { setupRouter } from '/@/router';
+import { setupErrorHandle } from '/@/logics/error-handle';
+import { router, setupRouter } from '/@/router';
 import { setupRouterGuard } from '/@/router/guard';
 import { setupStore } from '/@/store';
-import { setupErrorHandle } from '/@/logics/error-handle';
 import { setupGlobDirectives } from '/@/directives';
 import { setupI18n } from '/@/locales/setupI18n';
 import { registerGlobComp } from '/@/components/registerGlobComp';
 
-// Register icon Sprite
-import 'vite-plugin-svg-icons/register';
-// Do not introduce` on-demand in local development?
-// In the local development for on-demand introduction, the number of browser requests will increase by about 20%.
+// Do not introduce on-demand in local development?
+// In the local development for introduce on-demand, the number of browser requests will increase by about 20%.
 // Which may slow down the browser refresh.
 // Therefore, all are introduced in local development, and only introduced on demand in the production environment
 // if (import.meta.env.DEV) {
 //   import('ant-design-vue/dist/antd.less');
 // }
 
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
 import setupFastCrud from './setup-fast-crud';
 import './setup-fast-crud.less';
 
-(async () => {
-  // @ts-ignore
+async function bootstrap() {
   const app = createApp(App);
-
-  // Configure vuex store
+  app.use(Antd);
+  // Configure store
   setupStore(app);
 
   // Initialize internal system configuration
@@ -45,13 +44,12 @@ import './setup-fast-crud.less';
 
   //----------- 安装fast-crud--------------
   setupFastCrud(app, i18n);
-  app.use(Antd);
   //--------------------------------------
   // Configure routing
   setupRouter(app);
 
   // router-guard
-  setupRouterGuard();
+  setupRouterGuard(router);
 
   // Register global directive
   setupGlobDirectives(app);
@@ -64,8 +62,6 @@ import './setup-fast-crud.less';
   await router.isReady();
 
   app.mount('#app', true);
+}
 
-  if (import.meta.env.DEV) {
-    window.__APP__ = app;
-  }
-})();
+void bootstrap();
