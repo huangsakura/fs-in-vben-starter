@@ -29,7 +29,7 @@ import './setup-fast-crud.less';
 
 async function bootstrap() {
   const app = createApp(App);
-  app.use(Antd);
+
   // Configure store
   setupStore(app);
 
@@ -44,6 +44,7 @@ async function bootstrap() {
 
   //----------- 安装fast-crud--------------
   setupFastCrud(app, i18n);
+  app.use(Antd);
   //--------------------------------------
   // Configure routing
   setupRouter(app);
