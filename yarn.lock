@@ -2741,12 +2741,11 @@ ansi-styles@^5.0.0:
   resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz#07449690ad45777d1924ac2abb2fc8895dba836b"
   integrity sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==
 
-ant-design-vue@2.2.0-beta.6:
-  version "2.2.0-beta.6"
-  resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-2.2.0-beta.6.tgz#14b20bc7723d9fc628c87870ee5ea4b78a220f8d"
-  integrity sha512-t0hG5W62mHnFyxYf6rztQlaVZMpziyz7jTbeRibBp72h46kIrO3d+RdJhLJQs8T7gfPzj7jJmVq2KFn0s5QeVw==
+ant-design-vue@2.2.0-rc.1:
+  version "2.2.0-rc.1"
+  resolved "https://registry.npmjs.org/ant-design-vue/-/ant-design-vue-2.2.0-rc.1.tgz#5e32e102c64f517d469c7af403cd6133b4ac8b45"
+  integrity sha512-cRqOpPrw6aoW+1LmMMf8cFlVKzhBSrmZUCfEn8jA1yp7gp6zj+wGkhT9jz6NUfPWRXmGgbf0hXi0rHkhWaFAOQ==
   dependencies:
-    "@ant-design-vue/use" "^0.0.1-0"
     "@ant-design/icons-vue" "^6.0.0"
     "@babel/runtime" "^7.10.5"
     "@simonwep/pickr" "~1.8.0"
