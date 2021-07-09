@@ -1,8 +1,8 @@
 import { defHttp } from '/@/utils/http/axios';
 import { FastCrud } from '@fast-crud/fast-crud';
 import '@fast-crud/fast-crud/dist/style.css';
-import FsUploader from '@fast-crud/extends-uploader';
-import '@fast-crud/extends-uploader/dist/style.css';
+import { FsExtendsUploader, FsExtendsEditor } from '@fast-crud/fast-extends';
+import '@fast-crud/fast-extends/dist/style.css';
 import UiAntdv from '@fast-crud/ui-antdv';
 
 // 导出 setupFastCrud
@@ -45,8 +45,9 @@ export default function (app, i18n) {
     },
   });
 
+  app.use(FsExtendsEditor);
   //配置uploader 公共参数
-  app.use(FsUploader, {
+  app.use(FsExtendsUploader, {
     defaultType: 'cos',
     cos: {
       domain: 'https://d2p-demo-1251260344.cos.ap-guangzhou.myqcloud.com',

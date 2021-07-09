@@ -1,4 +1,5 @@
 import * as api from './api';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 export default function ({ expose }) {
   const pageRequest = async (query) => {
     return await api.GetList(query);
@@ -15,7 +16,6 @@ export default function ({ expose }) {
     return await api.AddObj(form);
   };
 
-  console.log('expose', expose);
   return {
     crudOptions: {
       request: {
@@ -23,6 +23,14 @@ export default function ({ expose }) {
         addRequest,
         editRequest,
         delRequest,
+      },
+      rowHandle: {
+        buttons: {
+          view: {
+            // http://fast-crud.docmirror.cn/guide/advance/improve.html#图标使用
+            icon: 'ion:eye-outline',
+          },
+        },
       },
       columns: {
         id: {
