@@ -27,7 +27,7 @@ export default function ({ expose }) {
       rowHandle: {
         buttons: {
           view: {
-            // http://fast-crud.docmirror.cn/guide/advance/improve.html#图标使用
+            //请参考 http://fast-crud.docmirror.cn/guide/advance/improve.html#图标使用
             icon: 'ion:eye-outline',
           },
         },
