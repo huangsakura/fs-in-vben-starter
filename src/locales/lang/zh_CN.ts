@@ -3,10 +3,10 @@ import antdLocale from 'ant-design-vue/es/locale/zh_CN';
 import momentLocale from 'moment/dist/locale/zh-cn';
 import zhFsLocale from '@fast-crud/fast-crud/dist/locale/lang/zh-cn.js';
 
-const modules = import.meta.globEager('./zh_CN/**/*.ts');
+const modules = import.meta.globEager('./zh-CN/**/*.ts');
 export default {
   message: {
-    ...genMessage(modules, 'zh_CN'),
+    ...genMessage(modules, 'zh-CN'),
     antdLocale,
     fs: zhFsLocale.fs, //fast-crud的i18n配置
   },

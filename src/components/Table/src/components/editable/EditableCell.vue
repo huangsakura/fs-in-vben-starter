@@ -1,7 +1,13 @@
 <template>
   <div :class="prefixCls">
-    <div v-show="!isEdit" :class="`${prefixCls}__normal`" @click="handleEdit">
-      {{ getValues || '&nbsp;' }}
+    <div
+      v-show="!isEdit"
+      :class="{ [`${prefixCls}__normal`]: true, 'ellipsis-cell': column.ellipsis }"
+      @click="handleEdit"
+    >
+      <div class="cell-content" :title="column.ellipsis ? getValues ?? '' : ''">{{
+        getValues ?? '&nbsp;'
+      }}</div>
       <FormOutlined :class="`${prefixCls}__normal-icon`" v-if="!column.editRow" />
     </div>
 
@@ -14,14 +20,13 @@
         :rule="getRule"
         :ruleMessage="ruleMessage"
         :class="getWrapperClass"
-        size="small"
         ref="elRef"
         @change="handleChange"
         @options-change="handleOptionsChange"
         @pressEnter="handleEnter"
       />
       <div :class="`${prefixCls}__action`" v-if="!getRowEditable">
-        <CheckOutlined :class="[`${prefixCls}__icon`, 'mx-2']" @click="handleSubmit" />
+        <CheckOutlined :class="[`${prefixCls}__icon`, 'mx-2']" @click="handleSubmitClick" />
         <CloseOutlined :class="`${prefixCls}__icon `" @click="handleCancel" />
       </div>
     </div>
@@ -29,11 +34,10 @@
 </template>
 <script lang="ts">
   import type { CSSProperties, PropType } from 'vue';
+  import { computed, defineComponent, nextTick, ref, toRaw, unref, watchEffect } from 'vue';
   import type { BasicColumn } from '../../types/table';
   import type { EditRecordRow } from './index';
-
-  import { defineComponent, ref, unref, nextTick, computed, watchEffect, toRaw } from 'vue';
-  import { FormOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons-vue';
+  import { CheckOutlined, CloseOutlined, FormOutlined } from '@ant-design/icons-vue';
   import { CellComponent } from './CellComponent';
 
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -42,9 +46,10 @@
   import clickOutside from '/@/directives/clickOutside';
 
   import { propTypes } from '/@/utils/propTypes';
-  import { isString, isBoolean, isFunction, isNumber, isArray } from '/@/utils/is';
+  import { isArray, isBoolean, isFunction, isNumber, isString } from '/@/utils/is';
   import { createPlaceholderMessage } from './helper';
-  import { set, omit } from 'lodash-es';
+  import { omit, set } from 'lodash-es';
+  import { treeToList } from '/@/utils/helper/treeHelper';
 
   export default defineComponent({
     name: 'EditableCell',
@@ -106,6 +111,9 @@
         const value = isCheckValue ? (isNumber(val) && isBoolean(val) ? val : !!val) : val;
 
         return {
+          size: 'small',
+          getPopupContainer: () => unref(table?.wrapRef.value) ?? document.body,
+          getCalendarContainer: () => unref(table?.wrapRef.value) ?? document.body,
           placeholder: createPlaceholderMessage(unref(getComponent)),
           ...apiSelectProps,
           ...omit(compProps, 'onChange'),
@@ -154,6 +162,7 @@
 
       watchEffect(() => {
         defaultValueRef.value = props.value;
+        currentValueRef.value = props.value;
       });
 
       watchEffect(() => {
@@ -204,8 +213,7 @@
           if (isBoolean(editRule) && !currentValue && !isNumber(currentValue)) {
             ruleVisible.value = true;
             const component = unref(getComponent);
-            const message = createPlaceholderMessage(component);
-            ruleMessage.value = message;
+            ruleMessage.value = createPlaceholderMessage(component);
             return false;
           }
           if (isFunction(editRule)) {
@@ -251,6 +259,10 @@
         handleSubmit();
       }
 
+      function handleSubmitClick() {
+        handleSubmit();
+      }
+
       function handleCancel() {
         isEdit.value = false;
         currentValueRef.value = defaultValueRef.value;
@@ -275,9 +287,23 @@
         }
       }
 
-      // only ApiSelect
+      // only ApiSelect or TreeSelect
       function handleOptionsChange(options: LabelValueOptions) {
-        optionsRef.value = options;
+        const { replaceFields } = props.column?.editComponentProps ?? {};
+        const component = unref(getComponent);
+        if (component === 'ApiTreeSelect') {
+          const { title = 'title', value = 'value', children = 'children' } = replaceFields || {};
+          let listOptions: Recordable[] = treeToList(options, { children });
+          listOptions = listOptions.map((item) => {
+            return {
+              label: item[title],
+              value: item[value],
+            };
+          });
+          optionsRef.value = listOptions as LabelValueOptions;
+        } else {
+          optionsRef.value = options;
+        }
       }
 
       function initCbs(cbs: 'submitCbs' | 'validCbs' | 'cancelCbs', handle: Fn) {
@@ -341,7 +367,7 @@
         getRowEditable,
         getValues,
         handleEnter,
-        // getSize,
+        handleSubmitClick,
       };
     },
   });
@@ -401,6 +427,16 @@
         svg {
           color: @primary-color;
         }
+      }
+    }
+
+    .ellipsis-cell {
+      .cell-content {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
 
