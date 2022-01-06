@@ -29,3 +29,4 @@ pnpm-debug.log*
 *.sw?
 yarn.lock
 pnpm-lock.yaml
+/vite-profile.cpuprofile
