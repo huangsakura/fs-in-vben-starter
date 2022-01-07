@@ -7,7 +7,7 @@ async function request({ url, data, params }) {
         console.log('ret', ret);
         setTimeout(() => {
           resolve(ret.data);
-        }, 20);
+        }, 2000);
       });
     }
   }
