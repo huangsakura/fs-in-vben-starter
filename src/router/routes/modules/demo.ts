@@ -4,7 +4,7 @@ import { LAYOUT } from '/@/router/constant';
 
 const dashboard: AppRouteModule = {
   path: '/demo',
-  name: 'Demo',
+  name: 'FastCrud',
   component: LAYOUT,
   redirect: '/demo/crud',
   meta: {

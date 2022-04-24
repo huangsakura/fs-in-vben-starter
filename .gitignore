@@ -27,6 +27,5 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+vite-profile.cpuprofile
 yarn.lock
-pnpm-lock.yaml
-/vite-profile.cpuprofile
