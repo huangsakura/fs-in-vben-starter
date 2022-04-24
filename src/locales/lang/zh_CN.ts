@@ -10,6 +10,4 @@ export default {
     antdLocale,
     fs: zhFsLocale.fs, //fast-crud的i18n配置
   },
-  momentLocale,
-  momentLocaleName: 'zh-cn',
 };

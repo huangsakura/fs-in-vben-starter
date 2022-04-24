@@ -11,6 +11,6 @@ export default {
     antdLocale,
     fs: enFsLocale.fs, //fast-crud的i18n配置
   },
-  momentLocale: null,
-  momentLocaleName: 'en',
+  dateLocale: null,
+  dateLocaleName: 'en',
 };
