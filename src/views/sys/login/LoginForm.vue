@@ -24,6 +24,24 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
+    <FormItem name="captcha" class="enter-x">
+      <Input
+        size="large"
+        v-model:value="formData.captcha"
+        :placeholder="t('sys.login.captcha')"
+        class="fix-auto-fill"
+      >
+        <template #suffix>
+          <Image
+            :src="captchaSrc"
+            @click="clickCaptcha"
+            :width="100"
+            :height="28"
+            :preview="false"
+          />
+        </template>
+      </Input>
+    </FormItem>
 
     <ARow class="enter-x">
       <ACol :span="12">
@@ -84,7 +102,7 @@
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
+  import { Checkbox, Form, Input, Row, Col, Button, Divider, Image } from 'ant-design-vue';
   import {
     GithubFilled,
     WechatFilled,
@@ -98,6 +116,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
 
   import { useUserStore } from '/@/store/modules/user';
+  import { useCaptchaStore } from '/@/store/modules/captcha';
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
   //import { onKeyStroke } from '@vueuse/core';
@@ -110,6 +129,7 @@
   const { notification, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
+  const captchaStore = useCaptchaStore();
 
   const { setLoginState, getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
@@ -119,8 +139,10 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    account: '',
+    password: '',
+    captcha: '',
+    captchaId: '',
   });
 
   const { validForm } = useFormValid(formRef);
@@ -137,12 +159,14 @@
       const userInfo = await userStore.login({
         password: data.password,
         username: data.account,
-        mode: 'none', //不要默认的错误提示
+        captcha: data.captcha,
+        captchaId: data.captchaId,
+        // mode: 'none', //不要默认的错误提示
       });
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
-          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
           duration: 3,
         });
       }
@@ -156,4 +180,13 @@
       loading.value = false;
     }
   }
+
+  /**
+   * 获取验证码
+   */
+  const captchaSrc = ref();
+  async function clickCaptcha() {
+    captchaSrc.value = await captchaStore.fetchCaptcha();
+  }
+  clickCaptcha();
 </script>

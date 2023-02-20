@@ -14,7 +14,7 @@ export default function (app, i18n) {
   app.use(FastCrud, {
     i18n,
     async dictRequest({ url }) {
-      return await defHttp.request({ url });
+      return await defHttp.request({ method: 'get', url });
     },
     commonOptions() {
       return {
@@ -32,10 +32,22 @@ export default function (app, i18n) {
         request: {
           transformQuery: ({ page, form, sort }) => {
             const order = sort == null ? {} : { orderProp: sort.prop, orderAsc: sort.asc };
-            return { current: page.currentPage, size: page.pageSize, ...form, ...order };
+            return {
+              // current: page.currentPage,
+              pageNum: page.currentPage,
+              // size: page.pageSize,
+              pageSize: page.pageSize,
+              ...form,
+              ...order,
+            };
           },
           transformRes: ({ res }) => {
-            return { currentPage: res.current, pageSize: res.size, ...res };
+            return {
+              // currentPage: res.current,
+              pageNum: res.current,
+              pageSize: res.size,
+              ...res,
+            };
           },
         },
         form: {
@@ -62,7 +74,7 @@ export default function (app, i18n) {
             url: '/upload/cos/getAuthorization',
             method: 'get',
           },
-          { apiUrl: 'http://www.docmirror.cn:7070/api' }
+          { apiUrl: 'http://www.docmirror.cn:7070/api' },
         );
       },
       successHandle(ret) {
@@ -84,7 +96,7 @@ export default function (app, i18n) {
             url: '/upload/alioss/getAuthorization',
             method: 'get',
           },
-          { apiUrl: 'http://www.docmirror.cn:7070/api' }
+          { apiUrl: 'http://www.docmirror.cn:7070/api' },
         );
       },
       sdkOpts: {
@@ -106,7 +118,7 @@ export default function (app, i18n) {
             url: '/upload/qiniu/getToken',
             method: 'get',
           },
-          { apiUrl: 'http://www.docmirror.cn:7070/api' }
+          { apiUrl: 'http://www.docmirror.cn:7070/api' },
         );
       },
       successHandle(ret) {
