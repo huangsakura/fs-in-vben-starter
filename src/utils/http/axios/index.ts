@@ -82,8 +82,9 @@ const transform: AxiosTransform = {
     } else if (options.errorMessageMode === 'message') {
       createMessage.error(timeoutMsg);
     }
+    return {};
 
-    throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
+    // throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
   },
 
   // 请求之前处理config
