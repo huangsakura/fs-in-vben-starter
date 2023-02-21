@@ -3,15 +3,20 @@ import { fetchCaptchaApi } from '/@/api/sys/captcha';
 import { CaptchaRequest } from '/@/api/sys/model/captchaModel';
 
 interface CaptchaState {
-  captchaId: string | undefined;
+  captchaId: string;
 }
 
 export const useCaptchaStore = defineStore({
   id: 'app-captcha',
   state: (): CaptchaState => ({
     // 验证码id
-    captchaId: undefined,
+    captchaId: '',
   }),
+  getters: {
+    getcaptchaId(): string {
+      return this.captchaId;
+    },
+  },
   actions: {
     async fetchCaptcha() {
       const param: CaptchaRequest = {

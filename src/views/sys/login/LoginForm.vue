@@ -43,10 +43,11 @@
       </Input>
     </FormItem>
 
+    <!--
     <ARow class="enter-x">
       <ACol :span="12">
         <FormItem>
-          <!-- No logic, you need to deal with it yourself -->
+          -- No logic, you need to deal with it yourself --
           <Checkbox v-model:checked="rememberMe" size="small">
             {{ t('sys.login.rememberMe') }}
           </Checkbox>
@@ -54,13 +55,14 @@
       </ACol>
       <ACol :span="12">
         <FormItem :style="{ 'text-align': 'right' }">
-          <!-- No logic, you need to deal with it yourself -->
+          -- No logic, you need to deal with it yourself --
           <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
             {{ t('sys.login.forgetPassword') }}
           </Button>
         </FormItem>
       </ACol>
     </ARow>
+    -->
 
     <FormItem class="enter-x">
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
@@ -70,6 +72,7 @@
         {{ t('sys.login.registerButton') }}
       </Button> -->
     </FormItem>
+    <!--
     <ARow class="enter-x">
       <ACol :md="8" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
@@ -97,12 +100,19 @@
       <GoogleCircleFilled />
       <TwitterCircleFilled />
     </div>
+    -->
   </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider, Image } from 'ant-design-vue';
+  import {
+    /*Checkbox,*/ Form,
+    Input,
+    /*Row, Col,*/ Button,
+    /*Divider,*/ Image,
+  } from 'ant-design-vue';
+  /*
   import {
     GithubFilled,
     WechatFilled,
@@ -110,6 +120,7 @@
     GoogleCircleFilled,
     TwitterCircleFilled,
   } from '@ant-design/icons-vue';
+  */
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -121,8 +132,8 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   //import { onKeyStroke } from '@vueuse/core';
 
-  const ACol = Col;
-  const ARow = Row;
+  // const ACol = Col;
+  // const ARow = Row;
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
@@ -131,18 +142,18 @@
   const userStore = useUserStore();
   const captchaStore = useCaptchaStore();
 
-  const { setLoginState, getLoginState } = useLoginState();
+  const { /*setLoginState,*/ getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();
   const loading = ref(false);
-  const rememberMe = ref(false);
+  // const rememberMe = ref(false);
 
   const formData = reactive({
     account: '',
     password: '',
     captcha: '',
-    captchaId: '',
+    //captchaId: '',
   });
 
   const { validForm } = useFormValid(formRef);
@@ -160,7 +171,7 @@
         password: data.password,
         username: data.account,
         captcha: data.captcha,
-        captchaId: data.captchaId,
+        captchaId: captchaStore.getcaptchaId,
         // mode: 'none', //不要默认的错误提示
       });
       if (userInfo) {
