@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
 import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
-
+import { encryptByRsa } from '/@/utils/cipher';
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
@@ -15,6 +15,8 @@ enum Api {
  * @description: user login api
  */
 export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
+  // 对密码进行rsa加密
+  params.password = encryptByRsa(params.password);
   return defHttp.post<LoginResultModel>(
     {
       url: Api.Login,
