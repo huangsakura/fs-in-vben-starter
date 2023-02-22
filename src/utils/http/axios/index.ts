@@ -1,7 +1,7 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
 // The axios configuration can be changed according to the project, just change the file, other files can be left unchanged
 
-import type { AxiosResponse } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { clone } from 'lodash-es';
 import type { RequestOptions, Result } from '/#/axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
@@ -18,6 +18,10 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
+
+import { nanoid } from 'nanoid';
+import qs from 'qs';
+import { hashBySha256 } from '/@/utils/cipher';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -133,6 +137,7 @@ const transform: AxiosTransform = {
         config.params = undefined;
       }
     }
+    apiSign(config);
     return config;
   },
 
@@ -257,6 +262,76 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     ),
   );
 }
+
+/**
+ * api签名
+ * @param config
+ */
+function apiSign(config: AxiosRequestConfig) {
+  const timestamp = Date.now();
+  const nonce = nanoid();
+  const appKey = '1650421718131UUmaTUl';
+  const appSecret = '243354a03183425882aad3dbfbd8496d';
+
+  if (!config.params) {
+    config.params = {};
+  }
+  config.params.timestamp = timestamp;
+  config.params.nonce = nonce;
+  config.params.appKey = appKey;
+  config.params.client = 'WEB';
+  config.params.apiVersion = '202302';
+
+  if (!config.data) {
+    config.data = {};
+  }
+
+  let signValue = '';
+  if ('GET' === config.method) {
+    const signString = stringify(config.params) + '&appSecret=' + appSecret;
+    signValue = computeSha256(signString);
+  } else if ('POST' === config.method || 'PUT' === config.method || 'DELETE' === config.method) {
+    const signString =
+      JSON.stringify(config.data) +
+      '&apiVersion=' +
+      config.params.apiVersion +
+      '&appKey=' +
+      appKey +
+      '&appSecret=' +
+      appSecret +
+      '&nonce=' +
+      nonce +
+      '&timestamp=' +
+      timestamp;
+    signValue = computeSha256(signString);
+  }
+  config.params.sign = signValue;
+}
+
+/**
+ * 按照字母表排序
+ * @param {Object} a
+ * @param {Object} b
+ */
+function alphabeticalSort(a: any, b: any) {
+  return a.localeCompare(b);
+}
+
+/**
+ * 将对象转为url的query形式
+ * @param {Object} data
+ */
+function stringify(data: any): string {
+  return qs.stringify(data, { allowDots: true, encodeValuesOnly: true, sort: alphabeticalSort });
+}
+
+/**
+ * 计算字符串的sha256
+ */
+function computeSha256(value0: string) {
+  return hashBySha256(value0).toUpperCase();
+}
+
 export const defHttp = createAxios();
 
 // other api url
